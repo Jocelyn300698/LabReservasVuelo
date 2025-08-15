@@ -12,10 +12,17 @@ public class Casilla {
     private int posFila;
     private int posColumna;
     private boolean mina;
+    private boolean revelada;
+    private boolean marcada;
+    private int minasCercanas;
 
     public Casilla(int posFila, int posColumna) {
         this.posFila = posFila;
         this.posColumna = posColumna;
+        this.mina = false;
+        this.revelada = false;
+        this.marcada = false;
+        this.minasCercanas = 0;
     }
     
     public int getPosFila() {
@@ -40,6 +47,30 @@ public class Casilla {
 
     public void setMina(boolean mina) {
         this.mina = mina;
+    }
+
+    public boolean isRevelada() {
+        return revelada;
+    }
+
+    public void setRevelada(boolean revelada) {
+        this.revelada = revelada;
+    }
+
+    public boolean isMarcada() {
+        return marcada;
+    }
+
+    public void setMarcada(boolean marcada) {
+        this.marcada = marcada;
+    }
+
+    public int getMinasCercanas() {
+        return minasCercanas;
+    }
+
+    public void setMinasCercanas(int minasCercanas) {
+        this.minasCercanas = minasCercanas;
     }
     
 }
