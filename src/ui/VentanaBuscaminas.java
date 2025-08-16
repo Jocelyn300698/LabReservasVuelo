@@ -101,8 +101,17 @@ public class VentanaBuscaminas extends javax.swing.JFrame {
                     @Override
                     public void mousePressed(MouseEvent me) {
                         if (SwingUtilities.isRightMouseButton(me)) {
+                            Casilla c = tablero.getCasilla(fila, col);
+                            int marcasActuales = contarMarcasActuales();
+
+                            if (!c.isMarcada() && marcasActuales >= minasTotales) {
+                                JOptionPane.showMessageDialog(VentanaBuscaminas.this,
+                                        "No puedes marcar más casillas que el número de minas.");
+                                return;
+                            }
+
                             tablero.marcar(fila, col);
-                            actualizarTablero(); // Actualizar visualmente el tablero
+                            actualizarTablero();
                         }
                     }
                 });
@@ -111,10 +120,10 @@ public class VentanaBuscaminas extends javax.swing.JFrame {
             }
         }
 
-        panelTablero.revalidate(); // Esto refresca la interfaz
+        panelTablero.revalidate();
         panelTablero.repaint();
-        actualizarLabels(); // Muestra estadísticas actualizadas
-        lblMensaje.setText("¡Bienvenido!"); // Mensaje inicial
+        actualizarLabels();
+        lblMensaje.setText("¡Bienvenido!");
     }
     
     /**
@@ -177,18 +186,30 @@ public class VentanaBuscaminas extends javax.swing.JFrame {
                         default -> btn.setForeground(Color.BLACK);
                     }
                 }
-                btn.setEnabled(false); // No se puede volver a clickear
-            } else if (c.isMarcada()) { // Casilla marcada con bandera
-                btn.setText("🚩");
-                btn.setBackground(Color.YELLOW);
-            } else { // Casilla sin destapar ni marcar
-                btn.setText("");
-                btn.setBackground(null);
-                btn.setEnabled(true);
+                btn.setEnabled(false);
+                } else if (c.isMarcada()) {
+                    btn.setOpaque(true);
+                    btn.setForeground(Color.RED);
+                    btn.setText("🚩");
+                    btn.setBackground(Color.LIGHT_GRAY);
+                } else {
+                    btn.setText("");
+                    btn.setBackground(null);
+                    btn.setEnabled(true);
+                }
             }
         }
     }
-}
+    
+    private int contarMarcasActuales() {
+        int marcas = 0;
+        for (int i = 0; i < L; i++) {
+            for (int j = 0; j < L; j++) {
+                if (tablero.getCasilla(i, j).isMarcada()) marcas++;
+            }
+        }
+        return marcas;
+    }
     
     /**
      * Método para actualizar los labels de estadísticas
