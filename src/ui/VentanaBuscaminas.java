@@ -157,7 +157,7 @@ public class VentanaBuscaminas extends javax.swing.JFrame {
 
             if (c.isRevelada()) { // Si la casilla fue destapada
                 if (c.isMina()) {
-                    btn.setText(" ");
+                    btn.setText(" x ");
                     btn.setBackground(Color.RED); // Mina destapada en rojo
                 } else {
                     int valor = c.getMinasCercanas();
