@@ -26,7 +26,7 @@ import juego.TableroBuscaminas;
 public class VentanaBuscaminas extends javax.swing.JFrame {
     private TableroBuscaminas tablero; // Nuestra lógica del juego
     private JButton[][] botones;        // Matriz de botones que representa las casillas
-    private int L = 8;                  // Tamaño del tablero (LxL), se puede cambiar
+    private int L;                  // Tamaño del tablero (LxL)
     private int minasTotales;           // 2 * L
     private int juegosGanados = 0;  //Contador de juegos ganados
     private int juegosPerdidos = 0; //Contador de juegos perdidos
@@ -48,13 +48,30 @@ public class VentanaBuscaminas extends javax.swing.JFrame {
         iniciarNuevoJuego();
 
     }
+    /**
+     * Método para pedir al usuario el tamaño del tablero
+     */
+    private int pedirTamañoTablero() {
+        int L = 0;
+        do {
+            String input = JOptionPane.showInputDialog(this, "Ingrese el tamaño del tablero (L>2):", "Tamaño del tablero", JOptionPane.QUESTION_MESSAGE);
+            if (input == null) return 8; // Cancel → valor por defecto
+            try {
+                L = Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                L = 0;
+            }
+        } while (L <= 2);
+        return L;
+    }
 
     /**
      * Método para iniciar un nuevo juego
      */
     private void iniciarNuevoJuego() {
+        L = pedirTamañoTablero();
         minasTotales = 2 * L;   // Calcula minas según el  tamaño del tablero
-        tablero = new TableroBuscaminas(L, L, minasTotales);  // Se crea la lógica del tablero
+        tablero = new TableroBuscaminas(L);  // Se crea la lógica del tablero
         juegosJugados++;  // Esto aumenta el contador de juegos jugados
 
         // Definir tamaño y disposición del panel de botones

@@ -32,7 +32,7 @@ public class JuegoBuscaminas {
         } while (L <= 2);
 
         int minas = 2 * L;
-        tablero = new TableroBuscaminas(L, L, minas);
+        tablero = new TableroBuscaminas(L);
         juegosJugados++;
     }
 

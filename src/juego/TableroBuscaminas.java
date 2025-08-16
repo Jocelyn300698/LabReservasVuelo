@@ -14,14 +14,20 @@ public class TableroBuscaminas {
     private int numeroFilas;
     private int numeroColumnas;
     private int numeroMinas;
+    private int marcasColocadas; // Contador de banderas puestas
 
-    public TableroBuscaminas(int numeroFilas, int numeroColumnas, int numeroMinas) {
-        this.numeroFilas = numeroFilas;
-        this.numeroColumnas = numeroColumnas;
-        this.numeroMinas = numeroMinas;
-        inicializarCasillas();   // Creamos las casillas vacías
-        generarMinas();          // Colocamos las minas en posiciones aleatorias
-        contarMinasCercanas();   // Calculamos cuántas minas tiene cada casilla alrededor
+// Constructor usando tamaño L, genera un tablero LxL con 2*L minas
+    public TableroBuscaminas(int L) {
+        if (L <= 2) {
+            throw new IllegalArgumentException("El tamaño del tablero debe ser mayor a 2");
+        }
+        this.numeroFilas = L;
+        this.numeroColumnas = L;
+        this.numeroMinas = 2 * L;
+        this.marcasColocadas = 0;
+        inicializarCasillas();
+        generarMinas();
+        contarMinasCercanas();
     }
 
     // Crea las casillas del tablero con sus coordenadas
@@ -73,11 +79,21 @@ public class TableroBuscaminas {
         }
     }
 
-    // Marca una casilla con bandera (X)
+// Método para marcar/desmarcar casilla con bandera
     public void marcar(int fila, int col) {
         Casilla c = casillas[fila][col];
-        if (!c.isRevelada()) { // No podemos marcar una casilla destapada
-            c.setMarcada(!c.isMarcada()); // Alterna entre marcada y desmarcada
+        if (!c.isRevelada()) {
+            if (!c.isMarcada() && marcasColocadas >= numeroMinas) {
+                // Ya se alcanzó el límite de marcas
+                System.out.println("No se puede colocar más marcas, número máximo de minas alcanzado");
+                return;
+            }
+            c.setMarcada(!c.isMarcada());
+            if (c.isMarcada()) {
+                marcasColocadas++;
+            } else {
+                marcasColocadas--;
+            }
         }
     }
 
@@ -154,5 +170,20 @@ public class TableroBuscaminas {
 
     public Casilla getCasilla(int fila, int col) {
         return casillas[fila][col];
+    }
+    public int getNumeroMinas() {
+        return numeroMinas;
+    }
+
+    public int getMarcasColocadas() {
+        return marcasColocadas;
+    }
+
+    public int getNumeroFilas() {
+        return numeroFilas;
+    }
+
+    public int getNumeroColumnas() {
+        return numeroColumnas;
     }
 }
